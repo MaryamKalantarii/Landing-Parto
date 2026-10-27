@@ -1,0 +1,595 @@
+/* ==========================================================================
+   PARTO — Hero + device showcase
+   RTL layout: first grid column (content) sits on the RIGHT, the device
+   composition on the LEFT. The whole composition is sized in container-query
+   units (cqw) of .showcase, so laptop, phone and stone always scale together.
+   ========================================================================== */
+
+/* ---------- Section shell ---------- */
+
+.hero {
+  /* ↓↓↓  STONE BACKGROUND CONTROLS (full-bleed layer behind the whole hero)  ↓↓↓ */
+  --stone-scale: 1; /* >1 zooms the photo in (anchored to the bottom edge) */
+  --stone-offset-x: 0%; /* + moves it right, − left */
+  --stone-offset-y: 0%; /* + pushes it down, − lifts it */
+  --stone-position: center bottom; /* which part of the photo stays visible when cropped */
+  --stone-flip: 1; /* set to -1 to mirror the photo horizontally */
+  --stone-veil: 0.45; /* soft ivory wash behind the text for legibility (0 = off) */
+  /* ↑↑↑ ---------------------------------------------------------------- ↑↑↑ */
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh; /* the hero fills the whole first screen */
+  overflow: hidden;
+  background: var(--parto-bg);
+  color: var(--parto-text);
+  text-align: start;
+}
+
+/* Soft studio light + gentle edge vignette (kept warm and very low contrast). */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 80% at 72% 6%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 62%),
+    radial-gradient(90% 85% at 0% 100%, rgba(214, 206, 194, 0.5) 0%, rgba(214, 206, 194, 0) 60%),
+    linear-gradient(180deg, #f9f8f4 0%, #f5f2ec 55%, #eeeae2 100%);
+}
+
+.hero__stone {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transform: scaleX(var(--stone-flip));
+  transform-origin: 50% 100%;
+  translate: var(--stone-offset-x) var(--stone-offset-y);
+  scale: var(--stone-scale);
+}
+
+.hero__stone-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--stone-position);
+  user-select: none;
+}
+
+/* Soft ivory wash on the text side only, so copy stays readable on any photo. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(270deg, rgba(247, 245, 240, var(--stone-veil)) 0%, rgba(247, 245, 240, 0) 58%);
+}
+
+.hero__inner {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--parto-gutter);
+  padding-top: var(--header-h);
+  z-index: 1;
+}
+
+/* ---------- Content ---------- */
+
+.hero__content {
+  position: relative;
+  z-index: 3; /* always above the stone layer */
+  align-self: center;
+  padding-block: 2.5rem 2.25rem;
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin: 0 0 clamp(0.75rem, 2vw, 1.5rem);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--parto-muted-strong);
+}
+
+.hero__eyebrow-line {
+  flex: none;
+  width: 2rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4.25rem, 9.6vw, 9.25rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-align: right; /* physical: the wordmark hugs the right edge of the RTL column */
+  color: var(--parto-text);
+}
+
+.hero__subtitle {
+  margin: clamp(0.25rem, 0.8vw, 0.75rem) 0 0;
+  font-size: clamp(1.2rem, 2.5vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: balance;
+  color: var(--parto-text);
+}
+
+.hero__description {
+  max-width: 27.5rem; /* ≈ 440px */
+  margin: 1.25rem 0 0;
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  font-weight: 350;
+  line-height: 2.05;
+  text-wrap: pretty;
+  color: var(--parto-muted-strong);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* ---------- Scroll indicator (desktop only) ---------- */
+
+.hero__scroll {
+  position: absolute;
+  inset-inline-start: var(--parto-gutter);
+  bottom: 2rem;
+  z-index: 4;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--parto-muted-strong);
+  text-decoration: none;
+}
+
+.hero__scroll:focus-visible {
+  outline: 2px solid var(--parto-text);
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+.hero__scroll-line {
+  position: relative;
+  width: 1px;
+  height: 3.5rem;
+  overflow: hidden;
+  background: rgba(17, 17, 17, 0.16);
+}
+
+.hero__scroll-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--parto-text);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: hero-scroll-line 2.8s var(--ease-premium) infinite;
+}
+
+@keyframes hero-scroll-line {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ---------- Visual column ---------- */
+
+.hero__visual {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  /* bleed to the viewport edge so the stone reaches the left/bottom edges */
+  margin-inline: calc(-1 * var(--parto-gutter));
+}
+
+/* ==========================================================================
+   DEVICE SHOWCASE
+   --------------------------------------------------------------------------
+   Tweak the composition from here — no component edits required.
+   ========================================================================== */
+
+.showcase {
+  /* ↓↓↓  DEVICE COMPOSITION CONTROLS  ↓↓↓ */
+  --laptop-scale: 1;
+  --phone-scale: 1;
+  /* fine placement (all in cqw = % of the showcase width) */
+  --laptop-bottom: 12cqw; /* how high the laptop base sits above the bottom edge */
+  --phone-bottom: 4cqw;
+  --phone-left: 4cqw; /* distance of the phone from the outer (left) edge */
+  /* ↑↑↑ ---------------------- ↑↑↑ */
+
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin-inline: auto;
+  aspect-ratio: 100 / 75;
+  container-type: inline-size;
+}
+
+/* GSAP animates this wrapper; positioning lives on the parents. */
+.showcase__motion {
+  will-change: transform, opacity;
+}
+
+/* ---------- Placement wrappers ---------- */
+
+.showcase__laptop {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: var(--laptop-bottom);
+  width: 86cqw;
+  transform: scale(var(--laptop-scale));
+  transform-origin: 100% 100%;
+}
+
+.showcase__phone {
+  position: absolute;
+  z-index: 3;
+  left: var(--phone-left);
+  bottom: var(--phone-bottom);
+  width: 21.5cqw;
+  transform: scale(var(--phone-scale));
+  transform-origin: 0 100%;
+}
+
+/* ---------- Laptop ---------- */
+
+.laptop {
+  position: relative;
+  width: 100%;
+  transform: perspective(2600px) rotateY(5deg);
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 2.2cqw 2.6cqw rgba(32, 26, 18, 0.2)) drop-shadow(0 0.35cqw 0.5cqw rgba(32, 26, 18, 0.18));
+}
+
+.laptop__lid {
+  position: relative;
+  width: 90%;
+  margin-inline: auto;
+  padding: 1.05cqw 1.05cqw 1.75cqw;
+  border-radius: 1.7cqw 1.7cqw 0.4cqw 0.4cqw;
+  background: linear-gradient(158deg, #3c3c40 0%, #1d1d20 36%, #0d0d0f 100%);
+  box-shadow:
+    inset 0 0 0 0.1cqw rgba(255, 255, 255, 0.1),
+    inset 0 0.12cqw 0 0.05cqw rgba(255, 255, 255, 0.22);
+}
+
+.laptop__camera {
+  position: absolute;
+  top: 0.45cqw;
+  left: 50%;
+  width: 0.5cqw;
+  height: 0.5cqw;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #26303d 0%, #07080a 70%);
+  box-shadow: 0 0 0 0.08cqw rgba(255, 255, 255, 0.07);
+}
+
+.laptop__screen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 0.3cqw;
+  background: #f4f1ea;
+}
+
+/* faint glass reflection */
+.laptop__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 36%);
+}
+
+.laptop__base {
+  position: relative;
+  height: 1.9cqw;
+  margin-top: -0.05cqw;
+  border-radius: 0 0 2.2cqw 2.2cqw / 0 0 1.1cqw 1.1cqw;
+  background: linear-gradient(180deg, #f3f3f5 0%, #dcdce1 34%, #bcbcc3 78%, #9b9ba2 100%);
+  box-shadow:
+    inset 0 0.1cqw 0 rgba(255, 255, 255, 0.9),
+    inset 0 -0.12cqw 0 rgba(0, 0, 0, 0.16);
+}
+
+.laptop__base::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.4cqw;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
+}
+
+.laptop__base::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14%;
+  height: 0.6cqw;
+  translate: -50% 0;
+  border-radius: 0 0 0.8cqw 0.8cqw;
+  background: linear-gradient(180deg, #9a9aa1 0%, #cbcbd0 100%);
+  box-shadow: inset 0 -0.1cqw 0 rgba(255, 255, 255, 0.6);
+}
+
+.laptop__shadow {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: -1.3cqw;
+  height: 2.2cqw;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(40, 32, 22, 0.4) 0%, rgba(40, 32, 22, 0) 70%);
+  filter: blur(0.5cqw);
+}
+
+/* ---------- Phone ---------- */
+
+.phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.3;
+  padding: 0.28cqw;
+  border-radius: 3.1cqw;
+  background: linear-gradient(145deg, #dcdad6 0%, #7d7c7a 28%, #d2d0cb 52%, #6c6b69 100%);
+  box-shadow:
+    inset 0 0 0 0.08cqw rgba(255, 255, 255, 0.5),
+    0 0 0 0.05cqw rgba(0, 0, 0, 0.35);
+  filter: drop-shadow(0 1.7cqw 2.2cqw rgba(24, 18, 10, 0.32)) drop-shadow(0 0.3cqw 0.4cqw rgba(24, 18, 10, 0.2));
+}
+
+.phone__body {
+  width: 100%;
+  height: 100%;
+  padding: 0.55cqw;
+  border-radius: 2.82cqw;
+  background: #050506;
+}
+
+.phone__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 2.27cqw;
+  background: #f4f1ea;
+}
+
+.phone__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 34%);
+}
+
+.phone__island {
+  position: absolute;
+  top: 2.1%;
+  left: 50%;
+  z-index: 3; /* always above the screenshot */
+  width: 30%;
+  height: 3.3%;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #000;
+}
+
+.phone__btn {
+  position: absolute;
+  width: 0.22cqw;
+  border-radius: 0.1cqw;
+  background: linear-gradient(90deg, #6e6d6b, #bcbab6);
+}
+
+.phone__btn--action,
+.phone__btn--vol-up,
+.phone__btn--vol-down {
+  left: -0.13cqw;
+}
+
+.phone__btn--power {
+  right: -0.13cqw;
+  background: linear-gradient(270deg, #6e6d6b, #bcbab6);
+}
+
+.phone__btn--action {
+  top: 13%;
+  height: 3.4%;
+}
+
+.phone__btn--vol-up {
+  top: 20%;
+  height: 6.4%;
+}
+
+.phone__btn--vol-down {
+  top: 28.5%;
+  height: 6.4%;
+}
+
+.phone__btn--power {
+  top: 24%;
+  height: 10%;
+}
+
+/* ---------- Screen content (image or placeholder) ---------- */
+
+.screen-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.screen-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1cqw;
+  background:
+    radial-gradient(80% 70% at 30% 20%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(160deg, #f1eee8 0%, #e3ded5 100%);
+  color: #8b867e;
+  font-family: var(--font-fa);
+  font-size: max(10px, 1.35cqw);
+  font-weight: 400;
+}
+
+.screen-placeholder__icon {
+  width: 3.4cqw;
+  height: 3.4cqw;
+  opacity: 0.7;
+}
+
+.phone__screen .screen-placeholder {
+  padding-top: 8%;
+  font-size: max(9px, 1.2cqw);
+}
+
+.phone__screen .screen-placeholder__icon {
+  width: 3cqw;
+  height: 3cqw;
+}
+
+/* ==========================================================================
+   BREAKPOINTS
+   ========================================================================== */
+
+/* Phones: bring the phone forward a touch so it stays legible next to the laptop. */
+@media (max-width: 640px) {
+  .showcase {
+    --laptop-scale: 1.04;
+    --phone-scale: 1.08;
+    --phone-left: 3cqw;
+  }
+
+  .hero__content {
+    padding-top: 2rem;
+  }
+}
+
+/* Very narrow phones: full-width, stacked CTAs */
+@media (max-width: 479px) {
+  .hero__actions .parto-btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* Tablet & below: single column, content first, devices underneath. */
+@media (max-width: 1023px) {
+  .hero {
+    --stone-veil: 0.6;
+  }
+
+  .hero::after {
+    background: linear-gradient(180deg, rgba(247, 245, 240, var(--stone-veil)) 0%, rgba(247, 245, 240, 0) 62%);
+  }
+
+  .hero__inner {
+    padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  .hero__visual {
+    margin-top: 1rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+    column-gap: clamp(1rem, 2vw, 2.5rem);
+    align-items: stretch;
+  }
+
+  .hero__content {
+    padding-block: 2rem 8rem;
+  }
+
+  .hero__visual {
+    /* let the devices grow: bleed to the outer edge AND a little toward the text column */
+    margin-inline-start: calc(-1 * clamp(0px, 5vw, 80px));
+    margin-inline-end: calc(-1 * var(--parto-gutter));
+    margin-top: 0;
+  }
+
+  .hero__scroll {
+    display: flex;
+  }
+
+  /* Keep the whole composition inside the first screen: its height (75% of its width)
+     never exceeds the viewport height below the header. Anchored to the outer edge. */
+  .showcase {
+    max-width: min(1000px, max(560px, calc((100vh - var(--header-h)) / 0.75)));
+    max-width: min(1000px, max(560px, calc((100svh - var(--header-h)) / 0.75)));
+    margin-inline: auto 0;
+  }
+}
+
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-line::after {
+    animation: none;
+    transform: scaleY(0.4);
+  }
+
+  .showcase__motion {
+    will-change: auto;
+  }
+}

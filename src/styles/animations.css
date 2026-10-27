@@ -1,0 +1,15 @@
+/* Reserved for small CSS-only motion helpers. Scroll motion lives in GSAP (see src/lib/gsap.ts). */
+.lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
+}
+.lift:hover {
+  transform: translateY(-5px);
+}
+.zoom-on-hover img,
+.zoom-on-hover .zoom-target {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.zoom-on-hover:hover img,
+.zoom-on-hover:hover .zoom-target {
+  transform: scale(1.03);
+}

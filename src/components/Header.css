@@ -1,0 +1,211 @@
+/* ==========================================================================
+   Header — minimal, transparent at the top, softly opaque once scrolled.
+   RTL: first grid cell (logo) sits on the right, the CTA on the left.
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 50;
+  height: var(--header-h);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.45s var(--ease-premium),
+    border-color 0.45s var(--ease-premium),
+    backdrop-filter 0.45s var(--ease-premium);
+}
+
+.site-header.is-scrolled {
+  background: rgba(247, 245, 240, 0.86);
+  -webkit-backdrop-filter: saturate(1.15) blur(14px);
+  backdrop-filter: saturate(1.15) blur(14px);
+  border-bottom-color: rgba(216, 211, 204, 0.8);
+}
+
+.site-header__inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--parto-gutter);
+}
+
+/* ---------- Logo ---------- */
+
+.site-header__logo {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: var(--parto-text);
+  text-decoration: none;
+  unicode-bidi: isolate;
+}
+
+.site-header__logo:focus-visible,
+.site-header__nav a:focus-visible,
+.site-header__panel a:focus-visible,
+.site-header__toggle:focus-visible {
+  outline: 2px solid var(--parto-text);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ---------- Desktop navigation ---------- */
+
+.site-header__nav ul,
+.site-header__panel ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-header__nav ul {
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.site-header__nav a {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgba(17, 17, 17, 0.68);
+  text-decoration: none;
+  transition: color 0.35s var(--ease-premium);
+}
+
+.site-header__nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0.1rem;
+  height: 1px;
+  background: var(--parto-text);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.45s var(--ease-premium);
+}
+
+.site-header__nav a:hover,
+.site-header__nav a:focus-visible {
+  color: var(--parto-text);
+}
+
+.site-header__nav a:hover::after,
+.site-header__nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Actions ---------- */
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.5rem;
+}
+
+.site-header__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--parto-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--parto-text);
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-premium), background-color 0.3s var(--ease-premium);
+}
+
+.site-header__toggle:hover {
+  border-color: var(--parto-text);
+}
+
+/* ---------- Mobile / tablet ---------- */
+
+@media (max-width: 1023px) {
+  .site-header__inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+
+  .site-header__toggle {
+    display: inline-flex;
+  }
+}
+
+.site-header__panel {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  padding: 0.5rem var(--parto-gutter) 1.5rem;
+  background: rgba(247, 245, 240, 0.98);
+  border-bottom: 1px solid rgba(216, 211, 204, 0.8);
+  animation: header-panel-in 0.35s var(--ease-premium) both;
+}
+
+.site-header__panel ul {
+  flex-direction: column;
+}
+
+.site-header__panel li + li {
+  border-top: 1px solid rgba(216, 211, 204, 0.6);
+}
+
+.site-header__panel a {
+  display: block;
+  padding-block: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  color: var(--parto-text);
+  text-decoration: none;
+}
+
+@keyframes header-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header__panel {
+    display: none;
+  }
+}
+
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -4rem;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: var(--parto-cta-bg);
+  color: var(--parto-cta-text);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
