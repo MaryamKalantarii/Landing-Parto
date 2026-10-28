@@ -1,10 +1,30 @@
+
 import homeImg from "../assets/pages/detail1.png";
 import listImg from "../assets/pages/list.png";
 import productImg from "../assets/pages/product1.png";
 import cartImg from "../assets/pages/cart.png";
 import accountImg from "../assets/pages/account.png";
 
-export type PageLayout = "home" | "list" | "product" | "cart" | "account" | "form" | "content" | "dark";
+// عکس‌های ۱۰ صفحه‌ی پروژه‌ی خودت
+import galleryHomeImg from "../assets/pages/home.jpg";
+import aboutImg from "../assets/pages/about.jpg";
+import collectionImg from "../assets/pages/collection.jpg";
+import checkoutImg from "../assets/pages/checkout.jpg";
+import profileImg from "../assets/pages/profile.jpg";
+import ordersImg from "../assets/pages/order.jpg";
+import galleryImg from "../assets/pages/gallery.jpg";
+import whishImg from "../assets/pages/whishlist.jpg";
+import loginImg from "../assets/pages/login.jpg";
+import signupImg from "../assets/pages/signup.jpg";
+export type PageLayout =
+  | "home"
+  | "list"
+  | "product"
+  | "cart"
+  | "account"
+  | "form"
+  | "content"
+  | "dark";
 
 export interface PageEntry {
   label: string;
@@ -24,16 +44,15 @@ export const showcasePages: PageEntry[] = [
 
 /** Small thumbnails strip (section 10). */
 export const galleryPages: PageEntry[] = [
-  // بدون تغییر
-  { label: "خانه", layout: "dark" },
-  { label: "درباره ما", layout: "dark" },
-  { label: "مجموعه", layout: "dark" },
-  { label: "درباره ما", layout: "content" },
-  { label: "تکنولوژی", layout: "content" },
-  { label: "سفارش‌ها", layout: "list" },
-  { label: "سبد خرید", layout: "cart" },
-  { label: "حساب کاربری", layout: "account" },
-  { label: "ورود/ثبت‌نام", layout: "form" },
-  { label: "وبلاگ", layout: "content" },
-  { label: "تماس با ما", layout: "form" },
+  { label: "خانه", layout: "dark", image: galleryHomeImg },
+  { label: "درباره ما", layout: "dark", image: aboutImg },
+  { label: "مجموعه", layout: "dark", image: collectionImg },
+  { label: "چک لیست", layout: "content", image:checkoutImg },
+  { label: "حساب کاربری", layout: "content", image: profileImg },
+  { label: "سفارش‌ها", layout: "list", image: ordersImg },
+  { label: "گالری", layout: "list", image: galleryImg },
+  { label: "سبد خرید", layout: "cart", image: cartImg },
+  { label: "علاقمندی ها", layout: "account", image: whishImg },
+  { label: "ورود", layout: "form", image: loginImg },
+  { label: "ثبت نام", layout: "content", image: signupImg},
 ];

@@ -95,9 +95,18 @@ export default function PagesGallery() {
                   aria-label={`نمایش بزرگ ${p.label}`}
                   className="block w-full cursor-zoom-in text-right"
                 >
-                  <div className="overflow-hidden rounded-[2px] border border-line bg-white shadow-[0_10px_20px_-12px_rgba(0,0,0,0.35)] transition-shadow duration-300 hover:shadow-lg">
-                    <ScaledStorefront layout={p.layout} />
-                  </div>
+                  <div className="overflow-hidden rounded-[2px] border border-line bg-white shadow-[0_10px_20px_-12px_rgba(0,0,0,0.35)]">
+            {p.image ? (
+              <img
+                src={p.image}
+                alt={p.label}
+                loading="lazy"
+                className="block h-auto w-full cursor-zoom-in"
+              />
+            ) : (
+              <ScaledStorefront layout={p.layout} />
+            )}
+          </div>
 
                   <p className="mt-2 text-center text-[10px] text-ink/70">
                     {p.label}
@@ -131,13 +140,19 @@ export default function PagesGallery() {
           </button>
 
           <div className="flex max-h-full w-full max-w-5xl flex-col items-center">
-            <div className="max-h-[82vh] w-full overflow-auto rounded-sm bg-white shadow-2xl">
-              <div className="min-h-full w-full">
-                <ScaledStorefront
-                  layout={galleryPages[selectedPage].layout}
-                />
-              </div>
-            </div>
+                  <div className="max-h-[82vh] w-full overflow-auto rounded-sm bg-white shadow-2xl">
+                    {galleryPages[selectedPage].image ? (
+                      <img
+                        src={galleryPages[selectedPage].image}
+                        alt={galleryPages[selectedPage].label}
+                        className="block h-auto w-full object-contain"
+                      />
+                    ) : (
+                      <ScaledStorefront
+                        layout={galleryPages[selectedPage].layout}
+                      />
+                    )}
+                  </div>
 
             <p className="mt-4 text-sm text-white/90">
               {galleryPages[selectedPage].label}
