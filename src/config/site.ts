@@ -8,8 +8,9 @@ export const siteConfig = {
   purchaseUrl: "",
   /** TODO: put your real live-demo URL here. */
   demoUrl: "",
+  videoSrc: "/videos/intro.MOV",
   /** TODO: path or URL of the intro video (mp4/webm). Empty = poster + notice only. */
-  videoSrc: "",
+
   social: {
     telegram: "",
     instagram: "",

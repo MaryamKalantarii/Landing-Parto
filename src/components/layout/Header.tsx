@@ -85,7 +85,7 @@ export default function Header() {
             مشاهده دمو
           </Button>
           <Button href={resolveHref(siteConfig.purchaseUrl, "#cta")} size="sm">
-            خرید قالب
+           خرید قالب از راستچین
           </Button>
         </div>
 
