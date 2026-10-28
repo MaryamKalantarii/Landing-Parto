@@ -1,12 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 import Container from "../layout/Container";
 import Reveal from "../ui/Reveal";
-import { ScaledStorefront } from "../ui/Storefront";
 import { showcasePages } from "../../data/pages";
 import { useParallax } from "../../hooks/useScrollReveal";
 import Button from "../ui/Button";
 
-/** Layered page previews with depth: outer pages smaller & rotated, centre page largest. */
 const depth = [
   { w: "w-[17%]", rot: -10, y: 24, z: 1, par: "0.02" },
   { w: "w-[21%]", rot: -6, y: 8, z: 2, par: "0.05" },
@@ -41,7 +39,13 @@ export default function PagesShowcase() {
                 style={{ transform: `translateY(${d.y}px) rotateY(${d.rot}deg)`, zIndex: d.z }}
               >
                 <div className="overflow-hidden rounded-[3px] border border-line bg-white shadow-[0_24px_40px_-18px_rgba(0,0,0,0.35)]">
-                  <ScaledStorefront layout={p.layout} />
+                  <img
+                    src={p.image}
+                    alt={p.label}
+                    loading="lazy"
+                    draggable={false}
+                    className="block h-auto w-full"
+                  />
                 </div>
                 <figcaption className="mt-4 text-center text-[11px] text-ink/70">{p.label}</figcaption>
               </figure>
@@ -53,7 +57,13 @@ export default function PagesShowcase() {
           {showcasePages.map((p) => (
             <li key={p.label} className="w-[72%] shrink-0 snap-center">
               <div className="overflow-hidden rounded-sm border border-line shadow-md">
-                <ScaledStorefront layout={p.layout} />
+                <img
+                  src={p.image}
+                  alt={p.label}
+                  loading="lazy"
+                  draggable={false}
+                  className="block h-auto w-full"
+                />
               </div>
               <p className="mt-2 text-center text-xs">{p.label}</p>
             </li>
