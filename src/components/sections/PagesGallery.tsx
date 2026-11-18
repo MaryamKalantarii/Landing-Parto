@@ -95,18 +95,18 @@ export default function PagesGallery() {
                   aria-label={`نمایش بزرگ ${p.label}`}
                   className="block w-full cursor-zoom-in text-right"
                 >
-                  <div className="overflow-hidden rounded-[2px] border border-line bg-white shadow-[0_10px_20px_-12px_rgba(0,0,0,0.35)]">
-            {p.image ? (
-              <img
-                src={p.image}
-                alt={p.label}
-                loading="lazy"
-                className="block h-auto w-full cursor-zoom-in"
-              />
-            ) : (
-              <ScaledStorefront layout={p.layout} />
-            )}
-          </div>
+               <div className="aspect-[4/3] overflow-hidden rounded-[2px] border border-line bg-white shadow-[0_10px_20px_-12px_rgba(0,0,0,0.35)]">
+  {p.image ? (
+    <img
+      src={p.image}
+      alt={p.label}
+      loading="lazy"
+      className="block h-full w-full cursor-zoom-in object-cover object-top"
+    />
+  ) : (
+    <ScaledStorefront layout={p.layout} />
+  )}
+</div>
 
                   <p className="mt-2 text-center text-[10px] text-ink/70">
                     {p.label}
